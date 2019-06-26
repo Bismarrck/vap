@@ -56,3 +56,31 @@ print(atoms.get_total_energy())
 print(atoms.get_forces())
 print(atoms.get_stress() / GPa)
 ```
+
+To use the provided datasets:
+
+```python
+from ase.db import connect
+
+db = connect("datasets/snap.db")
+size = len(db)
+for atoms_id in range(1, 1 + size):
+    atoms = db.get_atoms(id=atoms_id, add_additional_information=True)
+```
+
+The random seed for splitting datasets is a constant, **611**
+
+```python
+from sklearn.model_selection import train_test_split
+from ase.db import connect
+
+db = connect("datasets/snap.db")
+size = len(db)
+_, test_id_list = train_test_split(
+    range(1, 1 + size), 
+    random_state=611, 
+    test_size=300)
+
+for atoms_id in test_id_list:
+    atoms = db.get_atoms(id=atoms_id, add_additional_information=True)
+```
