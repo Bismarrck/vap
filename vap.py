@@ -954,7 +954,7 @@ class TensorAlloyCalculator(Calculator):
     def calculate(self, atoms=None, properties=('energy', 'forces', 'stress'),
                   system_changes=all_changes, print_time=False):
         """
-        Calculate the total energy and other properties (1body, kbody, atomic).
+        Calculate the total energy and other properties.
         """
         Calculator.calculate(self, atoms, properties)
         with self._graph.as_default():
@@ -962,7 +962,7 @@ class TensorAlloyCalculator(Calculator):
             tic = time.time()
             feed_dict = self.get_feed_dict(atoms, print_time=print_time)
             if print_time:
-                print(f'* Python feed dict time: {time.time() - tic}')
+                print(f'* Python feed dict total time: {time.time() - tic}')
             tic = time.time()
             self.results = self._sess.run(ops, feed_dict=feed_dict)
             if print_time:
